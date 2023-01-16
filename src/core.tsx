@@ -98,6 +98,7 @@ export function NostrProvider({
       connectToRelays()
     } else {
       reconnectToRelays()
+    }
   }, [])
 
   const publish = (event: NostrEvent) => {
