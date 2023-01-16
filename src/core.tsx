@@ -67,7 +67,7 @@ export function NostrProvider({
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit2=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ ==testEdit3=== nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -77,6 +77,7 @@ export function NostrProvider({
         log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
         onDisconnectCallback?.(relay)
         setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
+        reconnectToRelays();
       })
 
       relay.on("error", () => {
@@ -85,9 +86,9 @@ export function NostrProvider({
     })
   }, [])
   
-    const reconnectToRelays = useCallback(() => {
+  const reconnectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-      log(debug, "info", `❓==testEdit2=== nostr (${relayUrl}): Reconnect???`)
+      log(debug, "info", `❓==testEdit3=== nostr (${relayUrl}): Reconnect???`)
     })
   }, [])
 
