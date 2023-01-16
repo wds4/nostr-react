@@ -67,7 +67,7 @@ export function NostrProvider({
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ ==testEdit2=== nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -84,13 +84,20 @@ export function NostrProvider({
       })
     })
   }, [])
+  
+    const reconnectToRelays = useCallback(() => {
+    relayUrls.forEach(async (relayUrl) => {
+      log(debug, "info", `❓==testEdit2=== nostr (${relayUrl}): Reconnect???`)
+    })
+  }, [])
 
   useEffect(() => {
     // Make sure we only start the relays once (even in strict-mode)
     if (isFirstRender.current) {
       isFirstRender.current = false
       connectToRelays()
-    }
+    } else {
+      reconnectToRelays()
   }, [])
 
   const publish = (event: NostrEvent) => {
