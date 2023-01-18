@@ -88,7 +88,7 @@ export function NostrProvider({
 
   const connectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-        await connectToRelay(relayUrl: Relay);
+        await connectToRelay(relayUrl);
     })
   }, [])
 
