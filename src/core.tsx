@@ -92,7 +92,7 @@ export function NostrProvider({
     relayUrls.forEach(async (relayUrl) => {
       var stillConnected = false;
       for (oRelay in connectedRelays) {
-          if (oRelay.url == relayUrl {
+          if (oRelay.url == relayUrl) {
               stillConnected = true;
           }
       }
