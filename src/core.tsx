@@ -91,10 +91,9 @@ export function NostrProvider({
   const reconnectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
       var stillConnected = false;
+      console.log("==testEdit6===; connectedRelays: "+JSON.stringify(connectedRelays,null,4))
       for (var oRelay in connectedRelays) {
-          if (oRelay.url == relayUrl) {
-              stillConnected = true;
-          }
+         console.log("==testEdit6===; oRelay: "+JSON.stringify(oRelay,null,4))
       }
       if (stillConnected) {
           log(debug, "info", `✅✅==testEdit6=== nostr (${relayUrl}): Still connected!!!`)
