@@ -21,11 +21,12 @@ type OnSubscribeFunc = (sub: Sub, relay: Relay) => void
 interface NostrContextType {
   isLoading: boolean
   debug?: boolean
+  autoReconnect?: boolean
   connectedRelays: Relay[]
   onConnect: (_onConnectCallback?: OnConnectFunc) => void
   onDisconnect: (_onDisconnectCallback?: OnDisconnectFunc) => void
   publish: (event: NostrEvent) => void
-  updateRelayList: (newRelayList: Relay[] ) => void
+  updateRelayList: (newRelayList: Relay[], connectedRelays: Relay[] ) => void
 }
 
 const NostrContext = createContext<NostrContextType>({
@@ -50,10 +51,12 @@ export function NostrProvider({
   children,
   relayUrls,
   debug,
+  autoReconnect,
 }: {
   children: ReactNode
   relayUrls: string[]
   debug?: boolean
+  autoReconnect?: boolean
 }) {
   const [isLoading, setIsLoading] = useState(true)
   const [connectedRelays, setConnectedRelays] = useState<Relay[]>([])
@@ -78,7 +81,7 @@ export function NostrProvider({
         log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
         onDisconnectCallback?.(relay)
         setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
-        reconnectToRelays(relayUrl);
+        if (autoReconnect) { reconnectToRelays(relayUrl); }
       })
 
       relay.on("error", () => {
@@ -95,47 +98,6 @@ export function NostrProvider({
   const reconnectToRelays = useCallback(async (disconnectedRelayUrl:string) => {
     log(debug, "info", `❓❓==testEdit10=== reconnectToRelays (${disconnectedRelayUrl}): Need to reconnect!!!`)
     await connectToRelay(disconnectedRelayUrl);
-
-    /*
-    const relay = relayInit(disconnectedRelayUrl)
-    relay.connect()
-
-    relay.on("connect", () => {
-      log(debug, "info", `✅ ==testEdit10=== nostr (${disconnectedRelayUrl}): Connected!`)
-      setIsLoading(false)
-      onConnectCallback?.(relay)
-      setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
-    })
-
-    relay.on("disconnect", () => {
-      log(debug, "warn", `🚪 nostr (${disconnectedRelayUrl}): Connection closed.`)
-      onDisconnectCallback?.(relay)
-      setConnectedRelays((prev) => prev.filter((r) => r.url !== disconnectedRelayUrl))
-      reconnectToRelays(disconnectedRelayUrl);
-    })
-
-    relay.on("error", () => {
-      log(debug, "error", `❌ nostr (${disconnectedRelayUrl}): Connection error!`)
-    })
-    */
-
-    /*
-    relayUrls.forEach(async (relayUrl) => {
-      var stillConnected = false;
-      console.log("==testEdit10===; connectedRelays: "+JSON.stringify(connectedRelays,null,4))
-      connectedRelays.map((relay) => {
-        log(debug, "info", `✅⬆️✅ ==testEdit10==; nostr (${relay.url}): still connected!`)
-      });
-      for (var oRelay in connectedRelays) {
-         console.log("==testEdit10===; oRelay: "+JSON.stringify(oRelay,null,4))
-      }
-      if (stillConnected) {
-          log(debug, "info", `✅✅==testEdit10=== nostr (${relayUrl}): Still connected!!!`)
-      } else {
-          log(debug, "info", `❓❓==testEdit10=== nostr (${relayUrl}): Need to reconnect!!!`)
-      }
-    })
-    */
   }, [])
 
   useEffect(() => {
@@ -143,8 +105,6 @@ export function NostrProvider({
     if (isFirstRender.current) {
       isFirstRender.current = false
       connectToRelays()
-    } else {
-      // reconnectToRelays()
     }
   }, [])
 
@@ -156,7 +116,8 @@ export function NostrProvider({
     })
   }
 
-  const updateRelayList = (newRelayList: Relay[] ) => {
+  const updateRelayList = (newRelayList: Relay[], connectedRelays: Relay[] ) => {
+    console.log("testEdit10 here in updateRelayList")
     return newRelayList.map((relay) => {
       log(debug, "info", `⬆️==testEdit10=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
     })
