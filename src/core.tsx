@@ -96,21 +96,21 @@ export function NostrProvider({
     relay.connect()
 
     relay.on("connect", () => {
-      log(debug, "info", `✅ ==testEdit9=== nostr (${relayUrl}): Connected!`)
+      log(debug, "info", `✅ ==testEdit9=== nostr (${disconnectedRelayUrl}): Connected!`)
       setIsLoading(false)
       onConnectCallback?.(relay)
       setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
     })
 
     relay.on("disconnect", () => {
-      log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
+      log(debug, "warn", `🚪 nostr (${disconnectedRelayUrl}): Connection closed.`)
       onDisconnectCallback?.(relay)
-      setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
+      setConnectedRelays((prev) => prev.filter((r) => r.url !== disconnectedRelayUrl))
       reconnectToRelays(disconnectedRelayUrl);
     })
 
     relay.on("error", () => {
-      log(debug, "error", `❌ nostr (${relayUrl}): Connection error!`)
+      log(debug, "error", `❌ nostr (${disconnectedRelayUrl}): Connection error!`)
     })
 
     /*
