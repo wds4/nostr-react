@@ -114,7 +114,7 @@ export function NostrProvider({
 
   const updateRelayList = (newRelayList: Relay[] ) => {
     return newRelayList.map((relay) => {
-      log(debug, "updateRelayList", `⬆️==testEdit4=== sub to (${relay.url}) if not already in connectedRelays`)
+      log(debug, "info", `⬆️==testEdit4=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
     })
   }
 
