@@ -88,7 +88,7 @@ export function NostrProvider({
     })
   }, [])
 
-  const reconnectToRelays = useCallback((disconnectedRelayUrl) => {
+  const reconnectToRelays = useCallback((disconnectedRelayUrl:string) => {
     log(debug, "info", `❓❓==testEdit8=== reconnectToRelays (${disconnectedRelayUrl}): Need to reconnect!!!`)
     /*
     relayUrls.forEach(async (relayUrl) => {
