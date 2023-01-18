@@ -88,13 +88,13 @@ export function NostrProvider({
 
   const connectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-        await connectToRelay(relayUrl:string);
+        await connectToRelay(relayUrl);
     })
   }, [])
 
   const reconnectToRelays = useCallback(async (disconnectedRelayUrl:string) => {
     log(debug, "info", `❓❓==testEdit10=== reconnectToRelays (${disconnectedRelayUrl}): Need to reconnect!!!`)
-    await connectToRelay(disconnectedRelayUrl:string);
+    await connectToRelay(disconnectedRelayUrl);
 
     /*
     const relay = relayInit(disconnectedRelayUrl)
