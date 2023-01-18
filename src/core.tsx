@@ -63,13 +63,12 @@ export function NostrProvider({
 
   const isFirstRender = useRef(true)
 
-  const connectToRelays = useCallback(() => {
-    relayUrls.forEach(async (relayUrl) => {
+  const connectToRelay = async (relayUrl) => {
       const relay = relayInit(relayUrl)
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit9=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ ==testEdit10=== nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -85,18 +84,24 @@ export function NostrProvider({
       relay.on("error", () => {
         log(debug, "error", `❌ nostr (${relayUrl}): Connection error!`)
       })
+  }
+
+  const connectToRelays = useCallback(() => {
+    relayUrls.forEach(async (relayUrl) => {
+        await connectToRelay(relayUrl);
     })
   }, [])
 
-  const reconnectToRelays = useCallback((disconnectedRelayUrl:string) => {
-    log(debug, "info", `❓❓==testEdit9=== reconnectToRelays (${disconnectedRelayUrl}): Need to reconnect!!!`)
+  const reconnectToRelays = useCallback(async (disconnectedRelayUrl:string) => {
+    log(debug, "info", `❓❓==testEdit10=== reconnectToRelays (${disconnectedRelayUrl}): Need to reconnect!!!`)
+    await connectToRelay(disconnectedRelayUrl);
 
-
+    /*
     const relay = relayInit(disconnectedRelayUrl)
     relay.connect()
 
     relay.on("connect", () => {
-      log(debug, "info", `✅ ==testEdit9=== nostr (${disconnectedRelayUrl}): Connected!`)
+      log(debug, "info", `✅ ==testEdit10=== nostr (${disconnectedRelayUrl}): Connected!`)
       setIsLoading(false)
       onConnectCallback?.(relay)
       setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -112,21 +117,22 @@ export function NostrProvider({
     relay.on("error", () => {
       log(debug, "error", `❌ nostr (${disconnectedRelayUrl}): Connection error!`)
     })
+    */
 
     /*
     relayUrls.forEach(async (relayUrl) => {
       var stillConnected = false;
-      console.log("==testEdit9===; connectedRelays: "+JSON.stringify(connectedRelays,null,4))
+      console.log("==testEdit10===; connectedRelays: "+JSON.stringify(connectedRelays,null,4))
       connectedRelays.map((relay) => {
-        log(debug, "info", `✅⬆️✅ ==testEdit9==; nostr (${relay.url}): still connected!`)
+        log(debug, "info", `✅⬆️✅ ==testEdit10==; nostr (${relay.url}): still connected!`)
       });
       for (var oRelay in connectedRelays) {
-         console.log("==testEdit9===; oRelay: "+JSON.stringify(oRelay,null,4))
+         console.log("==testEdit10===; oRelay: "+JSON.stringify(oRelay,null,4))
       }
       if (stillConnected) {
-          log(debug, "info", `✅✅==testEdit9=== nostr (${relayUrl}): Still connected!!!`)
+          log(debug, "info", `✅✅==testEdit10=== nostr (${relayUrl}): Still connected!!!`)
       } else {
-          log(debug, "info", `❓❓==testEdit9=== nostr (${relayUrl}): Need to reconnect!!!`)
+          log(debug, "info", `❓❓==testEdit10=== nostr (${relayUrl}): Need to reconnect!!!`)
       }
     })
     */
@@ -152,7 +158,7 @@ export function NostrProvider({
 
   const updateRelayList = (newRelayList: Relay[] ) => {
     return newRelayList.map((relay) => {
-      log(debug, "info", `⬆️==testEdit9=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
+      log(debug, "info", `⬆️==testEdit10=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
     })
   }
 
