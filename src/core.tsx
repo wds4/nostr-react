@@ -106,7 +106,7 @@ export function NostrProvider({
       log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
       onDisconnectCallback?.(relay)
       setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
-      reconnectToRelays(relayUrl);
+      reconnectToRelays(disconnectedRelayUrl);
     })
 
     relay.on("error", () => {
