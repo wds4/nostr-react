@@ -69,7 +69,7 @@ export function NostrProvider({
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit5=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ ==testEdit6=== nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -93,9 +93,9 @@ export function NostrProvider({
       var oRelayUrl = {url: relayUrl,status:1}
 
       if (connectedRelays.includes(oRelayUrl)) {
-          log(debug, "info", `✅✅==testEdit5=== nostr (${relayUrl}): Still connected!!!`)
+          log(debug, "info", `✅✅==testEdit6=== nostr (${relayUrl}): Still connected!!!`)
       } else {
-          log(debug, "info", `❓❓==testEdit5=== nostr (${relayUrl}): Need to reconnect!!!`)
+          log(debug, "info", `❓❓==testEdit6=== nostr (${relayUrl}): Need to reconnect!!!`)
       }
       
 
@@ -122,7 +122,7 @@ export function NostrProvider({
 
   const updateRelayList = (newRelayList: Relay[] ) => {
     return newRelayList.map((relay) => {
-      log(debug, "info", `⬆️==testEdit5=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
+      log(debug, "info", `⬆️==testEdit6=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
     })
   }
 
