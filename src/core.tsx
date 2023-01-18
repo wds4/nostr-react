@@ -90,14 +90,14 @@ export function NostrProvider({
 
   const reconnectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-      var oRelayUrl = {url: relayUrl,id:1}
-      /*
+      var oRelayUrl = {url: relayUrl,status:1}
+
       if (connectedRelays.includes(oRelayUrl)) {
           log(debug, "info", `✅✅==testEdit5=== nostr (${relayUrl}): Still connected!!!`)
       } else {
           log(debug, "info", `❓❓==testEdit5=== nostr (${relayUrl}): Need to reconnect!!!`)
       }
-      */
+      
 
     })
   }, [])
