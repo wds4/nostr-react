@@ -25,6 +25,7 @@ interface NostrContextType {
   onConnect: (_onConnectCallback?: OnConnectFunc) => void
   onDisconnect: (_onDisconnectCallback?: OnDisconnectFunc) => void
   publish: (event: NostrEvent) => void
+  updateRelayList: (newRelayList: Relay[] ) => void
 }
 
 const NostrContext = createContext<NostrContextType>({
@@ -33,6 +34,7 @@ const NostrContext = createContext<NostrContextType>({
   onConnect: () => null,
   onDisconnect: () => null,
   publish: () => null,
+  updateRelayList: () => null,
 })
 
 const log = (
@@ -110,11 +112,18 @@ export function NostrProvider({
     })
   }
 
+  const updateRelayList = (newRelayList: Relay[] ) => {
+    return newRelayList.map((relay) => {
+      log(debug, "updateRelayList", `⬆️ sub to (${relay.url}) if not already in connectedRelays`)
+    })
+  }
+
   const value: NostrContextType = {
     debug,
     isLoading,
     connectedRelays,
     publish,
+    updateRelayList,
     onConnect: (_onConnectCallback?: OnConnectFunc) => {
       if (_onConnectCallback) {
         onConnectCallback = _onConnectCallback
