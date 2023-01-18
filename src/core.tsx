@@ -69,7 +69,7 @@ export function NostrProvider({
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit3=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ ==testEdit4=== nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -87,10 +87,10 @@ export function NostrProvider({
       })
     })
   }, [])
-  
+
   const reconnectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-      log(debug, "info", `❓==testEdit3=== nostr (${relayUrl}): Reconnect???`)
+      log(debug, "info", `❓==testEdit4=== nostr (${relayUrl}): Reconnect???`)
     })
   }, [])
 
@@ -114,7 +114,7 @@ export function NostrProvider({
 
   const updateRelayList = (newRelayList: Relay[] ) => {
     return newRelayList.map((relay) => {
-      log(debug, "updateRelayList", `⬆️ sub to (${relay.url}) if not already in connectedRelays`)
+      log(debug, "updateRelayList", `⬆️==testEdit4=== sub to (${relay.url}) if not already in connectedRelays`)
     })
   }
 
