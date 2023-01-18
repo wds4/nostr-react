@@ -16,6 +16,7 @@ import { uniqBy } from "./utils"
 type OnConnectFunc = (relay: Relay) => void
 type OnDisconnectFunc = (relay: Relay) => void
 type OnEventFunc = (event: NostrEvent) => void
+type OnDoneFunc = () => void
 type OnSubscribeFunc = (sub: Sub, relay: Relay) => void
 
 interface NostrContextType {
@@ -25,7 +26,6 @@ interface NostrContextType {
   onConnect: (_onConnectCallback?: OnConnectFunc) => void
   onDisconnect: (_onDisconnectCallback?: OnDisconnectFunc) => void
   publish: (event: NostrEvent) => void
-  updateRelayList: (newRelayList: Relay[] ) => void
 }
 
 const NostrContext = createContext<NostrContextType>({
@@ -34,7 +34,6 @@ const NostrContext = createContext<NostrContextType>({
   onConnect: () => null,
   onDisconnect: () => null,
   publish: () => null,
-  updateRelayList: () => null,
 })
 
 const log = (
@@ -69,7 +68,7 @@ export function NostrProvider({
       relay.connect()
 
       relay.on("connect", () => {
-        log(debug, "info", `✅ ==testEdit4=== nostr (${relayUrl}): Connected!`)
+        log(debug, "info", `✅ nostr (${relayUrl}): Connected!`)
         setIsLoading(false)
         onConnectCallback?.(relay)
         setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
@@ -79,7 +78,6 @@ export function NostrProvider({
         log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
         onDisconnectCallback?.(relay)
         setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
-        reconnectToRelays();
       })
 
       relay.on("error", () => {
@@ -88,19 +86,11 @@ export function NostrProvider({
     })
   }, [])
 
-  const reconnectToRelays = useCallback(() => {
-    relayUrls.forEach(async (relayUrl) => {
-      log(debug, "info", `❓==testEdit4=== nostr (${relayUrl}): Reconnect???`)
-    })
-  }, [])
-
   useEffect(() => {
     // Make sure we only start the relays once (even in strict-mode)
     if (isFirstRender.current) {
       isFirstRender.current = false
       connectToRelays()
-    } else {
-      reconnectToRelays()
     }
   }, [])
 
@@ -112,18 +102,11 @@ export function NostrProvider({
     })
   }
 
-  const updateRelayList = (newRelayList: Relay[] ) => {
-    return newRelayList.map((relay) => {
-      log(debug, "info", `⬆️==testEdit4=== updateRelayList sub to (${relay.url}) if not already in connectedRelays`)
-    })
-  }
-
   const value: NostrContextType = {
     debug,
     isLoading,
     connectedRelays,
     publish,
-    updateRelayList,
     onConnect: (_onConnectCallback?: OnConnectFunc) => {
       if (_onConnectCallback) {
         onConnectCallback = _onConnectCallback
@@ -158,6 +141,7 @@ export function useNostrEvents({
 
   let onEventCallback: null | OnEventFunc = null
   let onSubscribeCallback: null | OnSubscribeFunc = null
+  let onDoneCallback: null | OnDoneFunc = null
 
   // Lets us detect changes in the nested filter object for the useEffect hook
   const filterBase64 =
@@ -194,6 +178,10 @@ export function useNostrEvents({
       setEvents((_events) => {
         return [event, ..._events]
       })
+    })
+
+    sub.on("eose", () => {
+      onDoneCallback?.()
     })
 
     return sub
@@ -237,6 +225,11 @@ export function useNostrEvents({
     onEvent: (_onEventCallback: OnEventFunc) => {
       if (_onEventCallback) {
         onEventCallback = _onEventCallback
+      }
+    },
+    onDone: (_onDoneCallback: OnDoneFunc) => {
+      if (_onDoneCallback) {
+        onDoneCallback = _onDoneCallback
       }
     },
   }
