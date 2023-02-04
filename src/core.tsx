@@ -70,7 +70,7 @@ export function NostrProvider({
 
     relayUrls.forEach(async (relayUrl) => {
       console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4) +"; Updated aConnectedRelays: "+JSON.stringify(aConnectedRelays,null,4) );
-      if (true) {
+      if (!aConnectedRelays.includes(relayUrl)) {
         console.log("qwerty; attempting to connect to relayUrl: "+relayUrl);
         const relay = relayInit(relayUrl)
         relay.connect()
