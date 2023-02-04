@@ -61,7 +61,7 @@ export function NostrProvider({
 
   const isFirstRender = useRef(true)
   
-  const aConnectedRelays: string[] = [];
+  let aConnectedRelays: string[] = [];
 
   const connectToRelays = useCallback(() => {
     aConnectedRelays = [];
