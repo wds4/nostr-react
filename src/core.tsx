@@ -70,6 +70,8 @@ export function NostrProvider({
     aConnectedRelays.forEach(async (relayUrl) => {
       if (!relayUrls.includes(relayUrl)) {
         console.log("qwerty NEED TO DISCONNECT FROM url: "+relayUrl);
+        const relay = relayInit(relayUrl)
+        relay.disconnect()
       }
     });
     relayUrls.forEach(async (relayUrl) => {
