@@ -69,7 +69,7 @@ export function NostrProvider({
   const connectToRelays = useCallback(() => {
     aConnectedRelays.forEach(async (relayUrl) => {
       if (!relayUrls.includes(relayUrl)) {
-        console.log("qwerty NEED TO DISCONNECT FROM url: "+relayUrl);
+        console.log("qwerty MUST NOW DISCONNECT FROM url: "+relayUrl);
         const relay = relayInit(relayUrl)
         relay.disconnect()
       }
