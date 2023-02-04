@@ -64,25 +64,30 @@ export function NostrProvider({
   const connectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
       console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4));
-      const relay = relayInit(relayUrl)
-      relay.connect()
+      if (!connectedRelays.includes(relayUrl)) {
+        console.log("qwerty; attempting to connect to relayUrl: "+relayUrl);
+        const relay = relayInit(relayUrl)
+        relay.connect()
 
-      relay.on("connect", () => {
-        log(debug, "info", `✅ nostr (${relayUrl}): Connected!`)
-        setIsLoading(false)
-        onConnectCallback?.(relay)
-        setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
-      })
+        relay.on("connect", () => {
+          log(debug, "info", `✅ nostr (${relayUrl}): Connected!`)
+          setIsLoading(false)
+          onConnectCallback?.(relay)
+          setConnectedRelays((prev) => uniqBy([...prev, relay], "url"))
+        })
 
-      relay.on("disconnect", () => {
-        log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
-        onDisconnectCallback?.(relay)
-        setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
-      })
+        relay.on("disconnect", () => {
+          log(debug, "warn", `🚪 nostr (${relayUrl}): Connection closed.`)
+          onDisconnectCallback?.(relay)
+          setConnectedRelays((prev) => prev.filter((r) => r.url !== relayUrl))
+        })
 
-      relay.on("error", () => {
-        log(debug, "error", `❌ nostr (${relayUrl}): Connection error!`)
-      })
+        relay.on("error", () => {
+          log(debug, "error", `❌ nostr (${relayUrl}): Connection error!`)
+        })
+      } else {
+        console.log("qwerty; not attempting to reconnect to relayUrl: "+relayUrl+" bc it is already connected!");
+      }
     })
   }, [relayUrls])
 
