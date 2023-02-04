@@ -61,7 +61,7 @@ export function NostrProvider({
 
   const isFirstRender = useRef(true)
   
-  let aConnectedRelays: string[] = [];
+  const aConnectedRelays: string[] = [];
   connectedRelays.forEach( (obj:Relay) => {
     aConnectedRelays.push(obj.url)
   })
