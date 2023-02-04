@@ -84,7 +84,7 @@ export function NostrProvider({
         log(debug, "error", `❌ nostr (${relayUrl}): Connection error!`)
       })
     })
-  }, [])
+  }, [relayUrls])
 
   useEffect(() => {
     // Make sure we only start the relays once (even in strict-mode)
@@ -95,7 +95,7 @@ export function NostrProvider({
     } else {
      console.log("qwerty; not connecting bc isFirstRender.current is false");
     }
-  }, [])
+  }, [relayUrls])
 
   const publish = (event: NostrEvent) => {
     return connectedRelays.map((relay) => {
