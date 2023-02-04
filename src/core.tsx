@@ -63,6 +63,7 @@ export function NostrProvider({
 
   const connectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
+      console.log("qwerty; connectToRelays for relayUrl: "+relayUrl);
       const relay = relayInit(relayUrl)
       relay.connect()
 
@@ -89,7 +90,10 @@ export function NostrProvider({
     // Make sure we only start the relays once (even in strict-mode)
     if (isFirstRender.current) {
       isFirstRender.current = false
+      console.log("qwerty; connectToRelays bc isFirstRender.current is true");
       connectToRelays()
+    } else {
+     console.log("qwerty; not connecting bc isFirstRender.current is false");
     }
   }, [])
 
