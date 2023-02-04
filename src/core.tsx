@@ -63,7 +63,7 @@ export function NostrProvider({
 
   const connectToRelays = useCallback(() => {
     relayUrls.forEach(async (relayUrl) => {
-      console.log("qwerty; connectToRelays for relayUrl: "+relayUrl);
+      console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4));
       const relay = relayInit(relayUrl)
       relay.connect()
 
@@ -93,7 +93,8 @@ export function NostrProvider({
       console.log("qwerty; connectToRelays bc isFirstRender.current is true");
       connectToRelays()
     } else {
-     console.log("qwerty; not connecting bc isFirstRender.current is false");
+      console.log("qwerty; normally not connecting bc isFirstRender.current is false, but now gonna do it anyway!");
+      connectToRelays()
     }
   }, [relayUrls])
 
