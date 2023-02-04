@@ -62,8 +62,9 @@ export function NostrProvider({
   const isFirstRender = useRef(true)
 
   const connectToRelays = useCallback(() => {
+    const aConnectedRelays = [];
     relayUrls.forEach(async (relayUrl) => {
-      console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4) );
+      console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4) +"; aConnectedRelays: "+JSON.stringify(aConnectedRelays,null,4) );
       if (true) {
         console.log("qwerty; attempting to connect to relayUrl: "+relayUrl);
         const relay = relayInit(relayUrl)
