@@ -60,9 +60,10 @@ export function NostrProvider({
   let onDisconnectCallback: null | OnDisconnectFunc = null
 
   const isFirstRender = useRef(true)
+  
+  const aConnectedRelays: string[] = [];
 
   const connectToRelays = useCallback(() => {
-    const aConnectedRelays = [];
     relayUrls.forEach(async (relayUrl) => {
       console.log("qwerty; connectToRelays for relayUrl: "+relayUrl+"; connectedRelays: "+JSON.stringify(connectedRelays,null,4) +"; aConnectedRelays: "+JSON.stringify(aConnectedRelays,null,4) );
       if (true) {
